@@ -26,4 +26,21 @@ class User extends Authenticatable
     protected $hidden = [
         'password', 'remember_token',
     ];
+
+
+    public function maps()
+    {
+        return $this->hasMany(Map::class);
+    }
+
+    public function points()
+    {
+        return $this->hasMany(Point::class);
+    }
+
+    public function sites()
+    {
+        return $this->hasMany(Site::class);
+    }
+
 }
