@@ -1,0 +1,40 @@
+.text-center {
+  text-align: center;
+}
+
+.text-left {
+  text-align: left;
+}
+
+.text-right {
+  text-align: right;
+}
+
+.no-bullet{
+  list-style: none;
+  margin-left: 0;
+}
+
+.display-block {
+  display: block;
+}
+
+.clearfix:after {
+  content:    ".";
+  display:    block;
+  height:     0;
+  clear:      both;
+  visibility: hidden;
+}
+
+.clearfix {
+  zoom: 1
+}
+
+.float-left{
+  float: left;
+}
+
+.float-right{
+  float: right;
+}

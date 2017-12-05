@@ -1,20 +1,9 @@
 @extends('layouts.app')
 
 @section('content')
-    <div class="container">
+    <h1>{{ config('app.name') }}</h1>
 
-        <div class="panel panel-default">
-            <div class="panel-heading">{{ config('app.name') }}</div>
+    <p>Under construction</p>
 
-            <div class="panel-body">
-                @if (session('status'))
-                    <div class="alert alert-success">
-                        {{ session('status') }}
-                    </div>
-                @endif
-                <p>Under construction</p>
-            </div>
-        </div>
-    </div>
 
 @endsection

@@ -1,0 +1,24 @@
+html, body, h1, h2, h3, h4, h5, h6, p, blockquote, address, pre, cite, code, dfn, abbr, acronym, kbd, a, samp, img, ins, i, b, u, strike, small, big, font, tt, q, dl, dt, dd, ul, ol, li, applet, object, iframe, form, fieldset, label, legend, th, td, th, tbody, tfoot, thead, tr, caption {
+  font-size: 100%;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  font-style: normal;
+}
+
+article, aside, details, figcaption, figure, footer, header, menu, nav, section, img {
+  display: block;
+}
+
+*, *:before, *:after {
+  box-sizing: border-box; 
+}
+
+nav ul {
+  list-style: none;
+  margin-left: 0;
+}
+
+html, body {
+  height: 100%;
+}

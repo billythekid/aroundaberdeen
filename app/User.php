@@ -43,4 +43,8 @@ class User extends Authenticatable
         return $this->hasMany(Site::class);
     }
 
+    public function getFirstNameAttribute()
+    {
+        return explode(' ',$this->name)[0];
+    }
 }

@@ -13,8 +13,11 @@
 
 Route::get('/', function () {
     return view('welcome');
-});
+})->name('index');
 
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
+Route::resource('/site', 'SiteController');
+Route::resource('/map', 'MapController');
+Route::resource('/point', 'PointController');
