@@ -4,7 +4,7 @@
 
     <h1>Register</h1>
 
-    <form class="form-horizontal" method="POST" action="{{ route('register') }}">
+    <form method="POST" action="{{ route('register') }}">
         {{ csrf_field() }}
 
         <label for="name">Name</label>
@@ -28,7 +28,7 @@
         <label for="password-confirm">Confirm Password</label>
         <input id="password-confirm" type="password" name="password_confirmation" required>
 
-        <button type="submit" class="btn btn-primary">
+        <button type="submit" class="btn">
             Register
         </button>
     </form>

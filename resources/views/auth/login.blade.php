@@ -3,7 +3,7 @@
 @section('content')
     <h1>Login</h1>
 
-    <form class="form-horizontal" method="POST" action="{{ route('login') }}">
+    <form method="POST" action="{{ route('login') }}">
         {{ csrf_field() }}
 
         <label for="email">E-Mail Address</label>
@@ -13,7 +13,7 @@
         @endif
 
         <label for="password">Password</label>
-        <input id="password" type="password" class="form-control" name="password" required>
+        <input id="password" type="password" name="password" required>
         @if ($errors->has('password'))
             <span><strong>{{ $errors->first('password') }}</strong></span>
         @endif

@@ -3,7 +3,7 @@
 @section('content')
     <h1>Reset Password</h1>
 
-    <form class="form-horizontal" method="POST" action="{{ route('password.request') }}">
+    <form method="POST" action="{{ route('password.request') }}">
         {{ csrf_field() }}
         <input type="hidden" name="token" value="{{ $token }}">
 
@@ -25,7 +25,7 @@
             <span><strong>{{ $errors->first('password_confirmation') }}</strong></span>
         @endif
 
-        <button type="submit" class="btn btn-primary">
+        <button type="submit" class="btn">
             Reset Password
         </button>
 
