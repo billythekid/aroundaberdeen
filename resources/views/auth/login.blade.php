@@ -7,23 +7,15 @@
         {{ csrf_field() }}
 
         <label for="email">E-Mail Address</label>
-
         <input id="email" type="email" name="email" value="{{ old('email') }}" required autofocus>
-
         @if ($errors->has('email'))
-            <span>
-                                        <strong>{{ $errors->first('email') }}</strong>
-                                    </span>
+            <span><strong>{{ $errors->first('email') }}</strong></span>
         @endif
 
         <label for="password">Password</label>
-
         <input id="password" type="password" class="form-control" name="password" required>
-
         @if ($errors->has('password'))
-            <span>
-                                        <strong>{{ $errors->first('password') }}</strong>
-                                    </span>
+            <span><strong>{{ $errors->first('password') }}</strong></span>
         @endif
 
         <label>
@@ -39,4 +31,5 @@
         </a>
 
     </form>
+
 @endsection
