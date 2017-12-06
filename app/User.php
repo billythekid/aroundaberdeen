@@ -27,6 +27,10 @@ class User extends Authenticatable
         'password', 'remember_token',
     ];
 
+    public function sites()
+    {
+        return $this->hasMany(Site::class);
+    }
 
     public function maps()
     {
@@ -38,13 +42,18 @@ class User extends Authenticatable
         return $this->hasMany(Point::class);
     }
 
-    public function sites()
+    public function tagtypes()
     {
-        return $this->hasMany(Site::class);
+        return $this->hasMany(Tagtype::class);
+    }
+
+    public function tags()
+    {
+        return $this->hasMany(Tag::class);
     }
 
     public function getFirstNameAttribute()
     {
-        return explode(' ',$this->name)[0];
+        return explode(' ', $this->name)[0];
     }
 }
