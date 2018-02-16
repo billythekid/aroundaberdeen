@@ -14,6 +14,15 @@
   use App\Http\Controllers\SiteController;
   use App\Site;
 
+  Route::domain('{subdomain}.' . env('APP_DOMAIN'))->group(function ($subdomain) {
+    Route::get('/', function( $subdomain){
+      return view('subdomain.index')
+        ->withSite($subdomain);
+    })->name('subdomain.index');
+    Route::resource('/map', 'MapController');
+    Route::resource('/point', 'PointController');
+  });
+
   Route::domain(env('APP_DOMAIN'))->group(function () {
     Route::get('/', function () {
       return view('welcome');
@@ -25,11 +34,3 @@
     Route::get('/home', 'HomeController@index')->name('home');
   });
 
-  Route::domain('{subdomain}.' . env('APP_DOMAIN'))->group(function ($subdomain) {
-    Route::get('/', function( $subdomain){
-      return view('subdomain.index')
-        ->withSite($subdomain);
-    })->name('subdomain.index');
-    Route::resource('/map', 'MapController');
-    Route::resource('/point', 'PointController');
-  });
