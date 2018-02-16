@@ -13,6 +13,7 @@
      * Display a listing of the resource.
      *
      * @return Response
+     * @throws \Illuminate\Auth\Access\AuthorizationException
      */
     public function index() {
       $this->authorize('view', Site::class);
