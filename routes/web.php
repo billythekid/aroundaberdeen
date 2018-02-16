@@ -33,4 +33,3 @@
     Route::resource('/site', 'SiteController');
     Route::get('/home', 'HomeController@index')->name('home');
   });
-
