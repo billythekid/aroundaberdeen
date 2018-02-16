@@ -15,6 +15,8 @@
      * @return Response
      */
     public function index() {
+      $this->authorize('view', Site::class);
+
       return view('site.index')
         ->withSites(
           Site::where('user_id', '=', auth()->user()->id)

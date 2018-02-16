@@ -19,7 +19,7 @@ class SitePolicy
      */
     public function view(User $user, Site $site)
     {
-        return true;
+        return auth()->check();
     }
 
     /**
