@@ -1,15 +1,19 @@
 <?php
 
-namespace App;
+  namespace App;
 
-use Illuminate\Database\Eloquent\Model;
+  use Illuminate\Database\Eloquent\Model;
 
-class Site extends Model
-{
-    protected $fillable = ['user_id', 'name'];
+  class Site extends Model
+  {
+    protected $fillable = [];
+    protected $primaryKey = 'subdomain';
+    protected $keyType = 'string';
 
-    public function user()
-    {
-        return $this->belongsTo(User::class);
+    protected $visible = ['name'];
+
+    public function user() {
+      return $this->belongsTo(User::class);
     }
-}
+
+  }
