@@ -23,7 +23,7 @@
     Route::resource('/point', 'PointController');
   });
 
-  Route::group(['/', function () {
+  Route::domain(env('APP_DOMAIN'))->group(function () {
     Route::get('/', function () {
       return view('welcome');
     })->name('index');
@@ -32,4 +32,4 @@
 
     Route::resource('/site', 'SiteController');
     Route::get('/home', 'HomeController@index')->name('home');
-  }]);
+  });
