@@ -13,11 +13,9 @@ class SitePolicy
     /**
      * Determine whether the user can view the site.
      *
-     * @param  \App\User  $user
-     * @param  \App\Site  $site
      * @return mixed
      */
-    public function view(User $user, Site $site)
+    public function view()
     {
         return auth()->check();
     }
