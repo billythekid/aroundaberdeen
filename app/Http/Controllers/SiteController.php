@@ -92,11 +92,14 @@
      * Show the form for editing the specified resource.
      *
      * @param Site $site
-     * @return void
+     * @return Response
+     * @throws \Illuminate\Auth\Access\AuthorizationException
      */
     public function edit(Site $site) {
       $this->authorize('update', $site);
 
+      return view('site.edit')
+        ->withSite($site);
     }
 
     /**

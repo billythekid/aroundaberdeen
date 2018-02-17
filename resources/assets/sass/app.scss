@@ -1,11 +1,19 @@
 @import "aroundaberdeen";
 
 .flex {
-  display:flex;
+  display: flex;
   justify-content: space-between;
   &-col {
     flex-direction: column;
   }
+}
+
+.btn {
+  width: 100%;
+}
+
+.w-30 {
+  width: 30%;
 }
 
 p:last-child {
