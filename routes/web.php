@@ -15,7 +15,7 @@
   use App\Site;
 
   Route::domain('{subdomain}.' . env('APP_DOMAIN'))->group(function ($subdomain) {
-    Route::get('/', function( $subdomain){
+    Route::get('/', function ($subdomain) {
       return view('subdomain.index')
         ->withSite($subdomain);
     })->name('subdomain.index');
