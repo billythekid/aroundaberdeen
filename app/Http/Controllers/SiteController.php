@@ -2,6 +2,7 @@
 
   namespace App\Http\Controllers;
 
+  use App\Map;
   use App\Site;
   use Illuminate\Http\Request;
   use Illuminate\Http\Response;
@@ -71,9 +72,19 @@
       $site->name      = $request->name;
       $site->subdomain = $subdomain;
       $site->user_id   = auth()->user()->id;
-      $site->save();
 
-      flash("Site \"{$site->name}\" created successfully.")->success();
+      if ($site->save()) {
+        $map = Map::create([
+          "user_id" => auth()->user()->id,
+          "site_id" => Site::findOrFail($subdomain)->id, // no idea why I can't just use $site->id here, ugh. (something to do with primary keys maybe?)
+          "lat"     => "57.14459820700167",
+          "lng"     => "-2.1058481488738607",
+          "zoom"    => 16,
+        ]);
+        flash("\"{$site->name}\" created successfully.")->success();
+      } else {
+        flash("There was a problem saving \"{$site->name}\".")->error();
+      }
 
       return redirect()->route('site.index');
     }
@@ -98,6 +109,8 @@
     public function edit(Site $site) {
       $this->authorize('update', $site);
 
+      $site->load('map');
+
       return view('site.edit')
         ->withSite($site);
     }
@@ -107,10 +120,32 @@
      *
      * @param  Request $request
      * @param Site     $site
-     * @return void
+     * @return Site
+     * @throws \Illuminate\Auth\Access\AuthorizationException
      */
     public function update(Request $request, Site $site) {
       $this->authorize('update', $site);
+
+      $this->validate($request, [
+//        'name' => 'sometimes|required|unique:sites|min:3|max:23',
+        "map.lat"  => "sometimes|required",
+        "map.lng"  => "sometimes|required",
+        "map.zoom" => "sometimes|required|numeric|min:0|max:23",
+      ]);
+
+      $site->name = $request->has('name') ? $request->name : $site->name;
+
+      $site->save();
+
+      if ($request->has('map')) {
+        $map       = $site->map;
+        $map->lat  = $request->map['lat'] ?? $map->lat;
+        $map->lng  = $request->map['lng'] ?? $map->lng;
+        $map->zoom = $request->map['zoom'] ?? $map->zoom;
+        $map->save();
+      }
+
+      return $site->load('map');
 
     }
 

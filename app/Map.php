@@ -7,7 +7,12 @@ use Illuminate\Database\Eloquent\Model;
 class Map extends Model
 {
 
-    protected $fillable = ['user_id', 'site_id', 'name'];
+    protected $fillable = ['user_id', 'site_id', 'lat', 'lng', 'zoom'];
+    protected $visible = ['id', 'lat', 'lng', 'zoom'];
+    protected $casts = [
+      'lat' => 'double',
+      'lng' => 'double'
+    ];
 
     public function user()
     {
@@ -16,11 +21,11 @@ class Map extends Model
 
     public function site()
     {
-        return $this->belongsTo(Site::class);
+        return $this->belongsTo(Site::class , 'site_id', 'id');
     }
 
     public function points()
     {
-        return $this->belongsToMany(Point::class);
+        return $this->hasMany(Point::class);
     }
 }

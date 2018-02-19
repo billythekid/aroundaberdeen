@@ -16,7 +16,7 @@ class Point extends Model
 
     public function maps()
     {
-        return $this->belongsToMany(Map::class);
+        return $this->belongsTo(Map::class);
     }
 
     public function tags()

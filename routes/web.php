@@ -19,17 +19,22 @@
       return view('subdomain.index')
         ->withSite($subdomain);
     })->name('subdomain.index');
-    Route::resource('/map', 'MapController');
-    Route::resource('/point', 'PointController');
   });
 
   Route::domain(env('APP_DOMAIN'))->group(function () {
+
     Route::get('/', function () {
       return view('welcome');
     })->name('index');
 
     Auth::routes();
 
-    Route::resource('/site', 'SiteController');
-    Route::get('/home', 'HomeController@index')->name('home');
+    Route::group(['middleware' => ['auth']], function () {
+      Route::resource('/site', 'SiteController');
+
+      Route::resource('/map', 'MapController');
+
+
+//      Route::resource('/point', 'PointController');
+    });
   });
