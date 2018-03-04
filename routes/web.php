@@ -26,7 +26,7 @@
   Route::domain(env('APP_DOMAIN'))->group(function () {
 
     Route::get('/', function () {
-      return view('welcome');
+      return view('welcome')->withSites(Site::all());
     })->name('index');
 
     Auth::routes();

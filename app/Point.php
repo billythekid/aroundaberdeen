@@ -10,7 +10,7 @@
     protected $visible = ['id', 'lat', 'lng', 'name'];
     protected $casts = ['lat' => 'float', 'lng' => 'float'];
 
-    public function maps() {
+    public function map() {
       return $this->belongsTo(Map::class);
     }
 

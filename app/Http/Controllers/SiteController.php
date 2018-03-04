@@ -96,6 +96,7 @@
      * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
      */
     public function show(Site $site) {
+      $this->middleware([]);
       return redirect()->route('subdomain.index', ['subdomain' => $site]);
     }
 
@@ -128,9 +129,10 @@
 
       $this->validate($request, [
 //        'name' => 'sometimes|required|unique:sites|min:3|max:23',
-        "map.lat"  => "sometimes|required",
-        "map.lng"  => "sometimes|required",
-        "map.zoom" => "sometimes|required|numeric|min:0|max:23",
+        "map.lat"   => "sometimes|required",
+        "map.lng"   => "sometimes|required",
+        "map.zoom"  => "sometimes|required|numeric|min:0|max:23",
+        "map.route" => "sometimes|required",
       ]);
 
       $site->name = $request->has('name') ? $request->name : $site->name;
@@ -138,10 +140,11 @@
       $site->save();
 
       if ($request->has('map')) {
-        $map       = $site->map;
-        $map->lat  = $request->map['lat'] ?? $map->lat;
-        $map->lng  = $request->map['lng'] ?? $map->lng;
-        $map->zoom = $request->map['zoom'] ?? $map->zoom;
+        $map        = $site->map;
+        $map->lat   = $request->map['lat'] ?? $map->lat;
+        $map->lng   = $request->map['lng'] ?? $map->lng;
+        $map->zoom  = $request->map['zoom'] ?? $map->zoom;
+        $map->route = $request->map['route'] ?? $map->route ?? "{}";
         $map->save();
       }
 

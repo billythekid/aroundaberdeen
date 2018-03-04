@@ -41,12 +41,12 @@
 
       $point       = new Point();
       $point->name = "New " . strtolower(str_singular($map->site->name));
-      $point->lat = $map->lat;
-      $point->lng = $map->lng;
+      $point->lat  = $map->lat;
+      $point->lng  = $map->lng;
 
       $map->points()->save($point);
 
-      return $point;
+      return response()->json($point);
     }
 
     /**
@@ -73,20 +73,40 @@
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request $request
-     * @param  int                      $id
-     * @return \Illuminate\Http\Response
+     * @param Point                     $point
+     * @return array
+     * @throws \Illuminate\Auth\Access\AuthorizationException
      */
-    public function update(Request $request, $id) {
-      return ['success'=> true];
+    public function update(Request $request, Point $point) {
+      $this->authorize('update', $point);
+
+      $this->validate($request, [
+        'name' => 'required',
+        'lat'  => 'required|numeric',
+        'lng'  => 'required|numeric',
+      ]);
+
+      $point->name = $request->input('name');
+      $point->lat  = $request->input('lat');
+      $point->lng  = $request->input('lng');
+      $point->save();
+
+      return response()->json(['success' => true, 'point' => $point]);
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int $id
-     * @return \Illuminate\Http\Response
+     * @param Point $point
+     * @return
+     * @throws \Exception
+     * @throws \Illuminate\Auth\Access\AuthorizationException
      */
-    public function destroy($id) {
-      //
+    public function destroy(Point $point) {
+      $this->authorize('delete', $point);
+      $map = $point->map;
+      $point->delete();
+
+      return response()->json($map->points);
     }
   }

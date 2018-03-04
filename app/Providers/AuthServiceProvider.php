@@ -2,6 +2,8 @@
 
   namespace App\Providers;
 
+  use App\Point;
+  use App\Policies\PointPolicy;
   use App\Policies\SitePolicy;
   use App\Site;
   use Illuminate\Support\Facades\Gate;
@@ -15,7 +17,8 @@
      * @var array
      */
     protected $policies = [
-      Site::class => SitePolicy::class,
+      Site::class  => SitePolicy::class,
+      Point::class => PointPolicy::class,
     ];
 
     /**

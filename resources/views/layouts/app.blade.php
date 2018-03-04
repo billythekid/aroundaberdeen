@@ -30,7 +30,7 @@
         </form>
       @endguest
     </div>
-    <div class="site-container">
+    <div class="site-container flex">
       @include('flash::message')
 
       @if ($errors->any())

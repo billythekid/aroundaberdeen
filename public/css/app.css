@@ -458,6 +458,8 @@ form textarea:not([type=checkbox]) {
   -webkit-box-pack: justify;
       -ms-flex-pack: justify;
           justify-content: space-between;
+  -ms-flex-wrap: wrap;
+      flex-wrap: wrap;
 }
 
 .flex-col {
@@ -496,5 +498,14 @@ p:last-child {
   color: #a94442;
   background-color: #f2dede;
   border-color: #ebccd1;
+}
+
+.site-edit,
+.site-display {
+  width: 75%;
+}
+
+.site-directions {
+  width: 20%;
 }
 

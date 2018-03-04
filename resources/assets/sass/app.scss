@@ -3,6 +3,7 @@
 .flex {
   display: flex;
   justify-content: space-between;
+  flex-wrap: wrap;
   &-col {
     flex-direction: column;
   }
@@ -37,4 +38,13 @@ p:last-child {
   color: #a94442;
   background-color: #f2dede;
   border-color: #ebccd1;
+}
+
+.site-edit,
+.site-display {
+  width: 75%;
+}
+
+.site-directions {
+  width: 20%
 }
