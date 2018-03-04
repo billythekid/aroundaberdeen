@@ -56,7 +56,7 @@
         markers: [],
         googleMap: {},
         directionsService: {},
-        directionsDisplay: {},
+        directionsRenderer: {},
         defaultMarkerOptions: {}, // added on mount
 
         optimize: false,
@@ -164,14 +164,14 @@
           }
         },
         hideRoute: function () {
-          this.directionsDisplay.setMap(null);
+          this.directionsRenderer.setMap(null);
         },
         showRoute: function () {
           waypoints = this.waypoints;
           if (this.waypoints.length > 23) {
             waypoints = [];
           }
-          this.directionsDisplay.setMap(null);
+          this.directionsRenderer.setMap(null);
           this.directionsService.route({
             origin: _.first(this.markers).getPosition(),
             waypoints: waypoints,
@@ -180,9 +180,9 @@
             travelMode: 'WALKING'
           }, function (response, status) {
             if (status === 'OK') {
-              this.directionsDisplay.setDirections(response);
-              this.directionsDisplay.setMap(this.googleMap);
-              this.map.route = this.directionsDisplay.getDirections();
+              this.directionsRenderer.setDirections(response);
+              this.directionsRenderer.setMap(this.googleMap);
+              this.map.route = this.directionsRenderer.getDirections();
               console.log(response);
             } else {
               window.alert('Directions request failed due to ' + status);
@@ -241,17 +241,16 @@
           });
 
           this.directionsService = new google.maps.DirectionsService;
-          this.directionsDisplay = new google.maps.DirectionsRenderer({
+          this.directionsRenderer = new google.maps.DirectionsRenderer({
             draggable: true,
             map: this.googleMap,
             panel: document.getElementById('directions'),
             suppressMarkers: true
           });
 
-          this.directionsDisplay.addListener('directions_changed', function(){
-            this.map.route = this.directionsDisplay.getDirections();
+          this.directionsRenderer.addListener('directions_changed', function(){
+            this.map.route = this.directionsRenderer.getDirections();
             this.$forceUpdate();
-            this.saveSite();
           }.bind(this));
 
           this.googleMap.addListener('dragend', function () {
@@ -283,7 +282,9 @@
 
           if (this.map.route !== {})
           {
-            this.directionsDisplay.setDirections(this.map.route);
+            this.directionsRenderer.setMap(null);
+            this.directionsRenderer.setDirections(this.map.route);
+            this.directionsRenderer.setMap(this.googleMap);
           }
 
         }.bind(this));
