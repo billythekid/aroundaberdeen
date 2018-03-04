@@ -5,7 +5,7 @@
   @php $errors = new \Illuminate\Support\MessageBag([]); @endphp
 
   <h1>404</h1>
-  <h2>{{ $exception->getMessage() }}</h2>
+  {{--<h2>{{ $exception->getMessage() }}</h2>--}}
 @endsection
 
 @section('scripts')

@@ -6,6 +6,8 @@
 
 require('./bootstrap');
 
+window.pluralize = require('pluralize');
+
 window.Vue = require('vue');
 
 window.GoogleMapsLoader = require('google-maps');
@@ -18,3 +20,5 @@ GoogleMapsLoader.KEY = 'AIzaSyB6VIMLxObqAjef-80mf3O0bocrzlogizA';
  */
 
 // Vue.component('example-component', require('./components/ExampleComponent.vue'));
+
+Vue.component('point-of-interest', require('./components/MarkerComponent.vue'));

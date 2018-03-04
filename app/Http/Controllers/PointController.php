@@ -1,19 +1,20 @@
 <?php
 
-namespace App\Http\Controllers;
+  namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
+  use App\Map;
+  use App\Point;
+  use Illuminate\Http\Request;
 
-class PointController extends Controller
-{
+  class PointController extends Controller
+  {
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
-    {
-        //
+    public function index() {
+      //
     }
 
     /**
@@ -21,64 +22,71 @@ class PointController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
-    {
-        //
+    public function create() {
+      //
     }
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
-    {
-        //
+    public function store(Request $request) {
+
+      $this->validate($request, [
+        'map' => 'required|numeric',
+      ]);
+      $map = Map::findOrFail($request->input('map'));
+
+      $point       = new Point();
+      $point->name = "New " . strtolower(str_singular($map->site->name));
+      $point->lat = $map->lat;
+      $point->lng = $map->lng;
+
+      $map->points()->save($point);
+
+      return $point;
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param  int $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
-    {
-        //
+    public function show($id) {
+      //
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
+     * @param  int $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
-    {
-        //
+    public function edit($id) {
+      //
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param  \Illuminate\Http\Request $request
+     * @param  int                      $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
-    {
-        //
+    public function update(Request $request, $id) {
+      return ['success'=> true];
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param  int $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
-    {
-        //
+    public function destroy($id) {
+      //
     }
-}
+  }

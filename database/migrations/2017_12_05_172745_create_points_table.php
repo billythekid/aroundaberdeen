@@ -14,10 +14,9 @@
     public function up() {
       Schema::create('points', function (Blueprint $table) {
         $table->increments('id');
-        $table->integer('user_id')->unsigned();
         $table->integer('map_id')->unsigned();
         $table->string('lat');
-        $table->string('long');
+        $table->string('lng');
         $table->string('name');
         $table->timestamps();
       });

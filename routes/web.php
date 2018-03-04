@@ -15,11 +15,13 @@
   use App\Site;
 
   Route::domain('{subdomain}.' . env('APP_DOMAIN'))->group(function ($subdomain) {
-    Route::get('/', function ($subdomain) {
-      return view('subdomain.index')
-        ->withSite($subdomain);
-    })->name('subdomain.index');
+    $names = [];
+    foreach (['index', 'store', 'create', 'destroy', 'update', 'show', 'edit'] as $route) {
+      $names[$route] = "subdomain." . $route;
+    }
+    Route::resource('/', 'SubdomainController', [$subdomain])->names($names);
   });
+
 
   Route::domain(env('APP_DOMAIN'))->group(function () {
 
@@ -34,7 +36,7 @@
 
       Route::resource('/map', 'MapController');
 
+      Route::resource('/point','PointController');
 
-//      Route::resource('/point', 'PointController');
     });
   });

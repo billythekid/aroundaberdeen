@@ -430,12 +430,16 @@ form label {
 
 form input,
 form textarea {
-  width: 100%;
   max-width: 400px;
   margin-bottom: 1rem;
   padding: 0.75rem;
   background: #fff;
   border: 1px solid #ccc;
+}
+
+form input:not([type=checkbox]),
+form textarea:not([type=checkbox]) {
+  width: 100%;
 }
 
 .text-block:first-of-type p {
