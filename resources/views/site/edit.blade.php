@@ -340,7 +340,7 @@
 
           this.addMarkers();
 
-          if (this.map.route !== {}) {
+          if (this.map.route !== []) {
             this.directionsRenderer.setMap(null);
             this.fixRouteLatLng();
             this.directionsRenderer.setDirections(this.map.route);
