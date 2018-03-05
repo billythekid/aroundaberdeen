@@ -184,9 +184,9 @@
         },
         hideRoute: function () {
           this.directionsRenderer.setMap(null);
-          this.directionsRenderer.setDirections({});
+          this.directionsRenderer.setDirections([]);
           this.directionsRenderer.setPanel(null);
-          this.map.route = {};
+          this.map.route = [];
           this.$forceUpdate();
           this.saveSite();
         },
