@@ -132,7 +132,6 @@
         "map.lat"   => "sometimes|required",
         "map.lng"   => "sometimes|required",
         "map.zoom"  => "sometimes|required|numeric|min:0|max:23",
-        "map.route" => "sometimes|required",
       ]);
 
       $site->name = $request->has('name') ? $request->name : $site->name;

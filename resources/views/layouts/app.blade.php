@@ -22,6 +22,7 @@
         <a href="{{ route('register') }}">Register</a>
       @else
         {{ Auth::user()->name }}
+        <a href="{{ route('site.index') }}">Your Sites</a>
         <a href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
           Logout
         </a>

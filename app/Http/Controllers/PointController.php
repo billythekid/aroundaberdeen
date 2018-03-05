@@ -109,4 +109,20 @@
 
       return response()->json($map->points);
     }
+
+
+    public function saveOrder(Request $request) {
+      $this->authorize('saveOrder', Point::class);
+      $this->validate($request, [
+        'points'=>'required|array'
+      ]);
+      foreach($request->input('points') as $key=>$point)
+      {
+
+        $point = Point::findOrFail($point);
+        $point->order = $key;
+        $point->save();
+      }
+      return response()->json($point->map->points);
+    }
   }

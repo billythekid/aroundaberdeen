@@ -7,7 +7,7 @@
   class Point extends Model
   {
 
-    protected $visible = ['id', 'lat', 'lng', 'name'];
+    protected $visible = ['id', 'lat', 'lng', 'name', 'order'];
     protected $casts = ['lat' => 'float', 'lng' => 'float'];
 
     public function map() {

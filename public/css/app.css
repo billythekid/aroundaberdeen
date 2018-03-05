@@ -509,3 +509,8 @@ p:last-child {
   width: 20%;
 }
 
+i.handle {
+  float: right;
+  cursor: row-resize;
+}
+

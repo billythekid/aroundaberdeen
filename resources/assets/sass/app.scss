@@ -48,3 +48,8 @@ p:last-child {
 .site-directions {
   width: 20%
 }
+
+i.handle {
+  float: right;
+  cursor: row-resize;
+}

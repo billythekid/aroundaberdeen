@@ -52,6 +52,38 @@
             this.markers.push(marker);
           }
         },
+        fixRouteLatLng() {
+          this.iterate(this.map.route);
+        },
+
+        iterate: function (obj) {
+          let walked = [];
+          let stack = [{obj: obj, stack: ''}];
+          while (stack.length > 0) {
+            let item = stack.pop();
+            let obj = item.obj;
+            for (let property in obj) {
+              if (obj.hasOwnProperty(property)) {
+                if (typeof obj[property] == "object") {
+                  let alreadyFound = false;
+                  for (let i = 0; i < walked.length; i++) {
+                    if (walked[i] === obj[property]) {
+                      alreadyFound = true;
+                      break;
+                    }
+                  }
+                  if (!alreadyFound) {
+                    if (obj[property] && obj[property].hasOwnProperty('lat') && obj[property].hasOwnProperty('lng')) {
+                      obj[property] = new google.maps.LatLng(obj[property].lat, obj[property].lng);
+                    }
+                    walked.push(obj[property]);
+                    stack.push({obj: obj[property], stack: item.stack + '.' + property});
+                  }
+                }
+              }
+            }
+          }
+        },
       },
       mounted: function () {
         GoogleMapsLoader.load(function (google) {
@@ -83,6 +115,7 @@
           this.addMarkers();
 
           if (this.map.route !== {}) {
+            this.fixRouteLatLng();
             window.directionsDisplay.setDirections(this.map.route);
           }
 

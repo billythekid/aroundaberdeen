@@ -14,28 +14,34 @@
     <button v-on:click="saveSite" v-bind:disabled="saving">
       <span v-if="saving">Saving…</span><span v-else>Save this map</span>
     </button>
-    <button v-on:click="showRoute">Show Route</button>
+    <button v-on:click="showRoute">Get Route</button>
     <label><input type="checkbox" v-model="optimize">Optimize Route?</label>
-    <button v-on:click="hideRoute">Hide Route</button>
+    <button v-on:click="hideRoute">Delete Route</button>
 
-    <hr>
-    <code>@{{ map.lat }} @{{ map.lng }} @{{ map.zoom }}</code>
+    {{--<hr>--}}
+    {{--<code>@{{ map.lat }} @{{ map.lng }} @{{ map.zoom }}</code>--}}
     <hr>
     <div v-if="points.length">
       <h2>@{{ pluralize(name) }}</h2>
       <button v-on:click="fitBounds">Fit map to @{{ pluralize(name).toLowerCase() }}</button>
-      <div v-for="point in points" class="marker">
-        <h3 v-text="point.name"></h3>
-        <label>Rename: <input type="text" v-model="point.name" v-on:change="savePoint(point)"></label>
-        <br>
-        <button v-on:click="bounce(point)">
-          <span v-if="!point.bouncing">Show</span><span v-else>Stop showing</span> @{{ point.name }} on map
-        </button>
-        <button v-on:click="removePoint(point)">Delete @{{ point.name }}</button>
-        {{--<br>--}}
-        {{--<code>lat: @{{ point.lat }}, lng: @{{ point.lng }}</code>--}}
-        <hr>
-      </div>
+      <hr>
+      <hr>
+      <draggable v-model="points" @end="savePointsOrder" :options="{handle:'.handle'}">
+        <div v-for="point in points" class="marker">
+          <i class="handle">⇅</i>
+          <h3 v-text="point.name"></h3>
+          <label>Rename: <input type="text" v-model="point.name" v-on:change="savePoint(point)"></label>
+          <br>
+          <button v-on:click="bounce(point)">
+            <span v-if="!point.bouncing">Show</span><span v-else>Stop showing</span> @{{ point.name }} on map
+          </button>
+          <button v-on:click="removePoint(point)">Delete @{{ point.name }}</button>
+          {{--<br>--}}
+          {{--<code>lat: @{{ point.lat }}, lng: @{{ point.lng }}</code>--}}
+          <hr>
+        </div>
+      </draggable>
+
     </div>
 
   </div>
@@ -63,7 +69,7 @@
         saving: false,
       },
       computed: {
-        waypoints: function(){
+        waypoints: function () {
           let waypoints = [];
           _.forEach(this.markers, function (marker) {
             waypoints.push({location: marker.getPosition()});
@@ -110,13 +116,26 @@
             this.googleMap.setZoom(this.map.zoom);
           }
         },
-
         addPoint: function () {
           axios.post('{{ route('point.store') }}', {
             '_method': 'POST',
             'map': this.map.id
           }).then(function (response) {
               this.points.push(response.data);
+              this.addMarkers();
+              console.log(response.data);
+            }.bind(this)
+          ).catch(function (error) {
+            console.log(error);
+          }.bind(this));
+        },
+        savePointsOrder: function () {
+          axios.post('{{ route('savePointsOrder') }}', {
+            '_method': 'PATCH',
+            'map': this.map.id,
+            'points': _.map(this.points, 'id'),
+          }).then(function (response) {
+              this.points = response.data;
               this.addMarkers();
               console.log(response.data);
             }.bind(this)
@@ -165,6 +184,11 @@
         },
         hideRoute: function () {
           this.directionsRenderer.setMap(null);
+          this.directionsRenderer.setDirections({});
+          this.directionsRenderer.setPanel(null);
+          this.map.route = {};
+          this.$forceUpdate();
+          this.saveSite();
         },
         showRoute: function () {
           waypoints = this.waypoints;
@@ -182,6 +206,7 @@
             if (status === 'OK') {
               this.directionsRenderer.setDirections(response);
               this.directionsRenderer.setMap(this.googleMap);
+              this.directionsRenderer.setPanel(document.getElementById('directions'));
               this.map.route = this.directionsRenderer.getDirections();
               console.log(response);
             } else {
@@ -199,7 +224,7 @@
             '_method': 'PATCH',
             'name': this.name,
             'map': this.map,
-            'route': this.route,
+            'route': this.map.route,
           }).then(function (response) {
             setTimeout(function () {
               this.saving = false;
@@ -225,6 +250,40 @@
             console.log(error);
           }.bind(this));
         },
+
+        fixRouteLatLng() {
+            this.iterate(this.map.route);
+        },
+
+        iterate: function (obj) {
+          let walked = [];
+          let stack = [{obj: obj, stack: ''}];
+          while (stack.length > 0) {
+            let item = stack.pop();
+            let obj = item.obj;
+            for (let property in obj) {
+              if (obj.hasOwnProperty(property)) {
+                if (typeof obj[property] == "object") {
+                  let alreadyFound = false;
+                  for (let i = 0; i < walked.length; i++) {
+                    if (walked[i] === obj[property]) {
+                      alreadyFound = true;
+                      break;
+                    }
+                  }
+                  if (!alreadyFound) {
+                    if (obj[property] && obj[property].hasOwnProperty('lat') && obj[property].hasOwnProperty('lng')) {
+                      obj[property] = new google.maps.LatLng(obj[property].lat, obj[property].lng);
+                    }
+                    walked.push(obj[property]);
+                    stack.push({obj: obj[property], stack: item.stack + '.' + property});
+                  }
+                }
+              }
+            }
+          }
+        },
+
       },
       mounted: function () {
         GoogleMapsLoader.load(function (google) {
@@ -248,7 +307,7 @@
             suppressMarkers: true
           });
 
-          this.directionsRenderer.addListener('directions_changed', function(){
+          this.directionsRenderer.addListener('directions_changed', function () {
             this.map.route = this.directionsRenderer.getDirections();
             this.$forceUpdate();
           }.bind(this));
@@ -280,9 +339,9 @@
 
           this.addMarkers();
 
-          if (this.map.route !== {})
-          {
+          if (this.map.route !== {}) {
             this.directionsRenderer.setMap(null);
+            this.fixRouteLatLng();
             this.directionsRenderer.setDirections(this.map.route);
             this.directionsRenderer.setMap(this.googleMap);
           }

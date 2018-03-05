@@ -23,6 +23,7 @@
     "dependencies": {
         "google-maps": "^3.2.1",
         "npm": "^5.7.1",
-        "pluralize": "^7.0.0"
+        "pluralize": "^7.0.0",
+        "vuedraggable": "^2.16.0"
     }
 }

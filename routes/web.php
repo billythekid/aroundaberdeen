@@ -37,6 +37,7 @@
       Route::resource('/map', 'MapController');
 
       Route::resource('/point','PointController');
+      Route::patch('/pointsOrder', 'PointController@saveOrder')->name('savePointsOrder');
 
     });
   });
