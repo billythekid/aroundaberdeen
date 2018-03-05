@@ -252,8 +252,8 @@
         },
 
         fixRouteLatLng() {
-            this.iterate(this.map.route);
-            // TODO - rename the route legs to the point names
+          this.iterate(this.map.route);
+          // TODO - rename the route legs to the point names
         },
 
         iterate: function (obj) {
@@ -340,7 +340,7 @@
 
           this.addMarkers();
 
-          if (this.map.route !== []) {
+          if (this.map.route.hasOwnProperty('routes')) {
             this.directionsRenderer.setMap(null);
             this.fixRouteLatLng();
             this.directionsRenderer.setDirections(this.map.route);
