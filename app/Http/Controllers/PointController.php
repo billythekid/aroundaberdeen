@@ -43,6 +43,7 @@
       $point->name = "New " . strtolower(str_singular($map->site->name));
       $point->lat  = $map->lat;
       $point->lng  = $map->lng;
+      $point->order = 0;
 
       $map->points()->save($point);
 

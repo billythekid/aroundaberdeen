@@ -123,10 +123,10 @@
           }).then(function (response) {
               this.points.push(response.data);
               this.addMarkers();
-              console.log(response.data);
+              // console.log(response.data);
             }.bind(this)
           ).catch(function (error) {
-            console.log(error);
+            // console.log(error);
           }.bind(this));
         },
         savePointsOrder: function () {
@@ -137,10 +137,10 @@
           }).then(function (response) {
               this.points = response.data;
               this.addMarkers();
-              console.log(response.data);
+              // console.log(response.data);
             }.bind(this)
           ).catch(function (error) {
-            console.log(error);
+            // console.log(error);
           }.bind(this));
         },
 
@@ -150,10 +150,10 @@
           }).then(function (response) {
               this.points = response.data;
               this.addMarkers();
-              console.log(response.data);
+              // console.log(response.data);
             }.bind(this)
           ).catch(function (error) {
-            console.log(error);
+            // console.log(error);
           }.bind(this));
         },
 
@@ -208,7 +208,7 @@
               this.directionsRenderer.setMap(this.googleMap);
               this.directionsRenderer.setPanel(document.getElementById('directions'));
               this.map.route = this.directionsRenderer.getDirections();
-              console.log(response);
+              // console.log(response);
             } else {
               window.alert('Directions request failed due to ' + status);
             }
@@ -229,9 +229,9 @@
             setTimeout(function () {
               this.saving = false;
             }.bind(this), 500);
-            console.log(response.data);
+            // console.log(response.data);
           }.bind(this)).catch(function (error) {
-            console.log(error);
+            // console.log(error);
           }.bind(this));
 
         },
@@ -245,9 +245,9 @@
             'lat': point.lat,
             'lng': point.lng
           }).then(function (response) {
-            console.log(response.data);
+            // console.log(response.data);
           }.bind(this)).catch(function (error) {
-            console.log(error);
+            // console.log(error);
           }.bind(this));
         },
 

@@ -14,7 +14,7 @@ class AddRouteColumnToMapsTable extends Migration
     public function up()
     {
         Schema::table('maps', function (Blueprint $table) {
-            $table->text('route');
+            $table->longText('route');
         });
     }
 

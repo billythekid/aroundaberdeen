@@ -74,13 +74,15 @@
       $site->user_id   = auth()->user()->id;
 
       if ($site->save()) {
-        $map = Map::create([
-          "user_id" => auth()->user()->id,
-          "site_id" => Site::findOrFail($subdomain)->id, // no idea why I can't just use $site->id here, ugh. (something to do with primary keys maybe?)
-          "lat"     => "57.14459820700167",
-          "lng"     => "-2.1058481488738607",
-          "zoom"    => 16,
-        ]);
+        $map          = new Map;
+        $map->user_id = auth()->user()->id;
+        $map->site_id = Site::findOrFail($subdomain)->id; // no idea why I can't just use $site->id here, ugh. (something to do with primary keys maybe?
+        $map->lat     = "57.14459820700167";
+        $map->lng     = "-2.1058481488738607";
+        $map->zoom    = 16;
+        $map->route   = '{}';
+        $map->save();
+
         flash("\"{$site->name}\" created successfully.")->success();
       } else {
         flash("There was a problem saving \"{$site->name}\".")->error();
@@ -97,6 +99,7 @@
      */
     public function show(Site $site) {
       $this->middleware([]);
+
       return redirect()->route('subdomain.index', ['subdomain' => $site]);
     }
 
@@ -129,9 +132,9 @@
 
       $this->validate($request, [
 //        'name' => 'sometimes|required|unique:sites|min:3|max:23',
-        "map.lat"   => "sometimes|required",
-        "map.lng"   => "sometimes|required",
-        "map.zoom"  => "sometimes|required|numeric|min:0|max:23",
+        "map.lat"  => "sometimes|required",
+        "map.lng"  => "sometimes|required",
+        "map.zoom" => "sometimes|required|numeric|min:0|max:23",
       ]);
 
       $site->name = $request->has('name') ? $request->name : $site->name;
