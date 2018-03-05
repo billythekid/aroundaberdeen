@@ -114,7 +114,7 @@
 
           this.addMarkers();
 
-          if (this.map.route !== {}) {
+          if (this.map.route.hasOwnProperty('routes')) {
             this.fixRouteLatLng();
             window.directionsDisplay.setDirections(this.map.route);
           }
