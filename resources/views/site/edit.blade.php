@@ -253,6 +253,7 @@
 
         fixRouteLatLng() {
             this.iterate(this.map.route);
+            // TODO - rename the route legs to the point names
         },
 
         iterate: function (obj) {
