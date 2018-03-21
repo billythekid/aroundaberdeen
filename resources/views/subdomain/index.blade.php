@@ -6,6 +6,14 @@
 
   <div id="site" style="width: 100%;">
     <div id="map" style="width:100%; height:450px"></div>
+    <div class="points">
+      <div v-for="point in points">
+        <h2>@{{ point.name }}</h2>
+        <button v-on:click="bounce(point)" v-text="point.bouncing ? 'Stop Bouncing Pin' : 'Bounce Pin'"></button>
+        <button v-on:click="zoom(point)">Zoom To @{{ point.name }}</button>
+        <hr>
+      </div>
+    </div>
 
   </div>
 
@@ -50,10 +58,24 @@
             }.bind(this));
             marker.setMap(window.map);
             this.markers.push(marker);
+            this.points[i].marker = marker;
           }
         },
-        fixRouteLatLng() {
-          this.iterate(this.map.route);
+
+        bounce: function (point) {
+          point.bouncing = !point.bouncing;
+          if (point.bouncing) {
+            point.marker.setAnimation(google.maps.Animation.BOUNCE);
+          } else {
+            point.marker.setAnimation(null);
+          }
+          this.$forceUpdate();
+        },
+
+        zoom: function(point)
+        {
+          window.map.setZoom(18);
+          window.map.panTo(point.marker.position);
         },
 
         iterate: function (obj) {
