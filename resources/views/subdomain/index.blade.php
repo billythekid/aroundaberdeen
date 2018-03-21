@@ -67,9 +67,9 @@
             marker.addListener('click', function () {
               // TODO - click listener, show the info about this marker
             }.bind(this));
-            setTimeout(function() {
+            // setTimeout(function() {
               marker.setMap(window.map);
-            }, i * 150);
+            // }, i * 75);
             this.markers.push(marker);
             this.points[i].marker = marker;
           }

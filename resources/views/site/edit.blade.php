@@ -3,47 +3,48 @@
 @section('content')
 
   <div id="site" class="site-edit">
+    <div class="site-container">
+      <h1>@{{ name }}</h1>
+      (change)<input type="text" v-model="name">
+      <p>This is where you can edit your site's map. You can add points of interest, set your map position and zoom
+        level for best fit and more.</p>
+      <div id="map" style="width:100%; height:450px"></div>
+      <button v-on:click="zoomIn">Zoom In</button>
+      <button v-on:click="zoomOut">Zoom Out</button>
+      <button v-on:click="addPoint">Add @{{ name }}</button>
+      <button v-on:click="saveSite" v-bind:disabled="saving">
+        <span v-if="saving">Saving…</span><span v-else>Save this map</span>
+      </button>
+      <button v-on:click="showRoute">Get Route</button>
+      <label><input type="checkbox" v-model="optimize">Optimize Route?</label>
+      <button v-on:click="hideRoute">Delete Route</button>
 
-    <h1>@{{ name }}</h1>
-    (change)<input type="text" v-model="name">
-    <p>This is where you can edit your site's map. You can add points of interest, set your map position and zoom level for best fit and more.</p>
-    <div id="map" style="width:100%; height:450px"></div>
-    <button v-on:click="zoomIn">Zoom In</button>
-    <button v-on:click="zoomOut">Zoom Out</button>
-    <button v-on:click="addPoint">Add @{{ name }}</button>
-    <button v-on:click="saveSite" v-bind:disabled="saving">
-      <span v-if="saving">Saving…</span><span v-else>Save this map</span>
-    </button>
-    <button v-on:click="showRoute">Get Route</button>
-    <label><input type="checkbox" v-model="optimize">Optimize Route?</label>
-    <button v-on:click="hideRoute">Delete Route</button>
-
-    {{--<hr>--}}
-    {{--<code>@{{ map.lat }} @{{ map.lng }} @{{ map.zoom }}</code>--}}
-    <hr>
-    <div v-if="points.length">
-      <h2>@{{ pluralize(name) }}</h2>
-      <button v-on:click="fitBounds">Fit map to @{{ pluralize(name).toLowerCase() }}</button>
+      {{--<hr>--}}
+      {{--<code>@{{ map.lat }} @{{ map.lng }} @{{ map.zoom }}</code>--}}
       <hr>
-      <hr>
-      <draggable v-model="points" @end="savePointsOrder" :options="{handle:'.handle'}">
-        <div v-for="point in points" class="marker">
-          <i class="handle">⇅</i>
-          <h3 v-text="point.name"></h3>
-          <label>Rename: <input type="text" v-model="point.name" v-on:change="savePoint(point)"></label>
-          <br>
-          <button v-on:click="bounce(point)">
-            <span v-if="!point.bouncing">Show</span><span v-else>Stop showing</span> @{{ point.name }} on map
-          </button>
-          <button v-on:click="removePoint(point)">Delete @{{ point.name }}</button>
-          {{--<br>--}}
-          {{--<code>lat: @{{ point.lat }}, lng: @{{ point.lng }}</code>--}}
-          <hr>
-        </div>
-      </draggable>
+      <div v-if="points.length">
+        <h2>@{{ pluralize(name) }}</h2>
+        <button v-on:click="fitBounds">Fit map to @{{ pluralize(name).toLowerCase() }}</button>
+        <hr>
+        <hr>
+        <draggable v-model="points" @end="savePointsOrder" :options="{handle:'.handle'}">
+          <div v-for="point in points" class="marker">
+            <i class="handle">⇅</i>
+            <h3 v-text="point.name"></h3>
+            <label>Rename: <input type="text" v-model="point.name" v-on:change="savePoint(point)"></label>
+            <br>
+            <button v-on:click="bounce(point)">
+              <span v-if="!point.bouncing">Show</span><span v-else>Stop showing</span> @{{ point.name }} on map
+            </button>
+            <button v-on:click="removePoint(point)">Delete @{{ point.name }}</button>
+            {{--<br>--}}
+            {{--<code>lat: @{{ point.lat }}, lng: @{{ point.lng }}</code>--}}
+            <hr>
+          </div>
+        </draggable>
 
+      </div>
     </div>
-
   </div>
 
   <div id="directions" class="site-directions"></div>
