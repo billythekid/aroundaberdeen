@@ -12,7 +12,7 @@
     </div>
 
     <div class="site-container">
-      <h2>{{ str_plural($site->name,count($site->map->points)) }}</h2>
+      <h2 style="margin-bottom: 1rem;">{{ str_plural($site->name,count($site->map->points)) }}</h2>
       <div class="points">
         <div v-for="point in points">
           <h3>@{{ point.name }}</h3>
@@ -67,7 +67,9 @@
             marker.addListener('click', function () {
               // TODO - click listener, show the info about this marker
             }.bind(this));
-            marker.setMap(window.map);
+            setTimeout(function() {
+              marker.setMap(window.map);
+            }, i * 150);
             this.markers.push(marker);
             this.points[i].marker = marker;
           }
