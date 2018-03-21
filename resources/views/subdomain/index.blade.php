@@ -1,18 +1,28 @@
 @extends('layouts.app')
 
 @section('content')
-  <h1 style="width: 100%;">{{ title_case($site->name) }} {{ title_case(config('app.name')) }}</h1>
-
+  <div class="site-container">
+    <h1 style="width: 100%;">{{ title_case($site->name) }} {{ title_case(config('app.name')) }}</h1>
+  </div>
 
   <div id="site" style="width: 100%;">
-    <div id="map" style="width:100%; height:450px"></div>
-    <div class="points">
-      <div v-for="point in points">
-        <h2>@{{ point.name }}</h2>
-        <button v-on:click="bounce(point)" v-text="point.bouncing ? 'Stop Bouncing Pin' : 'Bounce Pin'"></button>
-        <button v-on:click="zoom(point)">Zoom To @{{ point.name }}</button>
-        <hr>
+
+    <div class="map-wrapper" style="margin: 4rem 0; position: sticky; top: 0; z-index: 2;">
+      <div id="map" style="width:100%; height:450px;"></div>
+    </div>
+
+    <div class="site-container">
+      <h2>{{ str_plural($site->name,count($site->map->points)) }}</h2>
+      <div class="points">
+        <div v-for="point in points">
+          <h3>@{{ point.name }}</h3>
+          <button v-on:click="bounce(point)" v-text="point.bouncing ? 'Stop Bouncing Pin' : 'Bounce Pin'"></button>
+          <button v-on:click="zoom(point)" v-text="point.zoomed ? 'Zoom Out' : 'Zoom To ' + point.name"
+                  v-if="!zoomedToPoint || point.zoomed"></button>
+          <hr>
+        </div>
       </div>
+
     </div>
 
   </div>
@@ -33,6 +43,7 @@
         points: {!! $site->map->points !!},
         markers: [],
         defaultMarkerOptions: {},
+        zoomedToPoint: false
       },
       computed: {
         waypoints: function () {
@@ -72,10 +83,19 @@
           this.$forceUpdate();
         },
 
-        zoom: function(point)
-        {
-          window.map.setZoom(18);
-          window.map.panTo(point.marker.position);
+        zoom: function (point) {
+          if (this.zoomedToPoint) {
+            window.map.setZoom({{ $site->map->zoom }});
+            window.map.panTo({lat: {{ $site->map->lat }}, lng: {{ $site->map->lng }}});
+            this.zoomedToPoint = false;
+            point.zoomed = false;
+          }
+          else {
+            window.map.setZoom(18);
+            window.map.panTo(point.marker.position);
+            this.zoomedToPoint = true;
+            point.zoomed = true;
+          }
         },
 
         iterate: function (obj) {
