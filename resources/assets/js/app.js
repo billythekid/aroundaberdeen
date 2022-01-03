@@ -12,7 +12,7 @@ window.Vue = require('vue');
 
 window.GoogleMapsLoader = require('google-maps');
 
-GoogleMapsLoader.KEY = 'AIzaSyB6VIMLxObqAjef-80mf3O0bocrzlogizA';
+GoogleMapsLoader.KEY = 'XXxxXxXXXXXXxXxxXxxx-XXxxXXXxxxxxxxxxxX'; // previous key deleted from google too - no longer in use anyway
 /**
  * Next, we will create a fresh Vue application instance and attach it to
  * the page. Then, you may begin adding components to this application
